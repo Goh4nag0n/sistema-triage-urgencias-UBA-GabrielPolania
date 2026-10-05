@@ -27,4 +27,32 @@ class TriageRecordController extends Controller
 
         return redirect()->back()->with('success', "Registrado. Prioridad: {$priorityMessage}. FC: {$heartRateLog} lpm.");
     }
+
+
+
+    public function index(\Illuminate\Http\Request $request)
+    {
+        $query = TriageRecord::query();
+
+        if ($request->filled('search')) {
+            $query->where('patient_name', 'like', '%' . $request->search . '%');
+        }
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        $records = $query->latest()->paginate(10);
+        return view('triage.index', compact('records'));
+    }
+
+    public function create()
+    {
+        return view('triage.create');
+    }
+
+    public function destroy(TriageRecord $triage)
+    {
+        $triage->delete();
+        return redirect()->route('triage.index')->with('success', 'Registro eliminado correctamente.');
+    }
 }
