@@ -40,8 +40,23 @@
                     <td>{{ $record->patient_name }}</td>
                     <td><span class="badge bg-{{ $record->manchester_color == 'rojo' ? 'danger' : 'secondary' }}">{{ strtoupper($record->manchester_color) }}</span></td>
                     <td>{{ $record->heart_rate ?? 'N/A' }}</td>
-                    <td>{{ $record->status }}</td>
                     <td>
+                        @if($record->status === 'pending')
+                            <span class="badge bg-warning text-dark">Pendiente</span>
+                        @else
+                            <span class="badge bg-success">Atendido</span>
+                        @endif
+                    </td>
+                    <td>
+                        <!-- Botón para finalizar atención (Update) -->
+                        @if($record->status === 'pending')
+                            <form action="{{ route('triage.update', $record) }}" method="POST" class="d-inline">
+                                @csrf @method('PUT')
+                                <button class="btn btn-sm btn-success">Atender</button>
+                            </form>
+                        @endif
+
+                        <!-- Botón de Eliminar (Destroy) -->
                         <form action="{{ route('triage.destroy', $record) }}" method="POST" class="d-inline" onsubmit="return confirm('¿Seguro que desea eliminar este registro?');">
                             @csrf @method('DELETE')
                             <button class="btn btn-sm btn-danger">Eliminar</button>

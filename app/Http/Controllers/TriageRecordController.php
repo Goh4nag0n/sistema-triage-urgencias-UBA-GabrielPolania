@@ -55,4 +55,12 @@ class TriageRecordController extends Controller
         $triage->delete();
         return redirect()->route('triage.index')->with('success', 'Registro eliminado correctamente.');
     }
+
+    public function update(\Illuminate\Http\Request $request, TriageRecord $triage)
+    {
+        // Cambiamos el estado a 'attended' (atendido)
+        $triage->update(['status' => 'attended']);
+
+        return redirect()->route('triage.index')->with('success', "¡Listo! El paciente {$triage->patient_name} ha sido marcado como atendido.");
+    }
 }
