@@ -1,5 +1,8 @@
 <?php
 
+declare(strict_types=1);
+
+
 namespace App\Enums;
 
 enum ManchesterColorEnum: string {
@@ -15,6 +18,8 @@ enum ManchesterColorEnum: string {
             self::NARANJA => 10,
             self::AMARILLO => 60,
             self::VERDE => 120,
+
+            self::Azul => 240,
 
         };
     }
