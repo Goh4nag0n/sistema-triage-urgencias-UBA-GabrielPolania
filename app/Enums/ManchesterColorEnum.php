@@ -23,4 +23,20 @@ enum ManchesterColorEnum: string {
 
         };
     }
+
+    public static function resolvePriority(string $color): string {
+        $enum = self::tryFrom($color);
+
+        if (!$enum) {
+            throw new \App\Exceptions\InvalidTriageLevelException("Transición prohibida: El nivel de triage '{$color}' no es válido.");
+        }
+
+        return match($enum) {
+            self::ROJO => 'Crítico - Pase a Resucitación',
+            self::NARANJA => 'Emergencia - Box de Críticos',
+            self::AMARILLO => 'Urgencia - Sala de Espera Interna',
+            self::VERDE => 'Menor - Sala de Espera Externa',
+            self::AZUL => 'No Urgente - Consultorio Externo',
+        };
+    }
 }
